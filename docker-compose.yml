@@ -2,19 +2,20 @@ version: "3.9"
 services:
   client:
     build: client
+    container_name: client
     tty: true
+    restart: always
     network_mode: host
     volumes:
-      - ./client/src:/app
-      - vscode-server:/root/..vscode-server
+      - ./client/src:/app/src
+      - ./client/source/PythonAPI/carla:/app/PythonAPI
   server:
     build: server
     network_mode: host
+    container_name: server
     privileged: true
     environment:
       - DISPLAY=$DISPLAY
-    ports:
-      - 1234:2000
     deploy:
       resources:
         reservations:
@@ -23,7 +24,3 @@ services:
               count: all
               capabilities: [gpu]
     restart: always
-
-volumes:
-  vscode-server:
-    
