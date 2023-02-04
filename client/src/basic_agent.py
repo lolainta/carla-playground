@@ -36,11 +36,20 @@ while True:
     destination=random.choice(world.get_map().get_spawn_points())
     route=grp.trace_route(vehicle.get_location(),destination.location)
     routeManager.set_route(route)
-    routeManager.draw_route(sz=0.2,col=carla.Color(255,0,0))
+    routeManager.draw_route(sz=0.2,col=carla.Color(255,255,0))
     print(f"There are {len(route)} waypoints with length {routeManager.total_length} in the current route.")
 
-    routeManager.perturb(lambda x:math.atan(3*x)/math.atan(3))
+    tmp=3
+    routeManager.perturb(lambda x:math.atan(tmp*x)/math.atan(tmp))
     routeManager.draw_points(sz=0.1,col=carla.Color(0,0,255))
+
+    tmp=1.3
+    routeManager.perturb(lambda x:math.tan(x*tmp)/math.tan(tmp))
+    routeManager.draw_points(sz=0.1,col=carla.Color(0,255,0))
+
+    tmp=10
+    routeManager.perturb(lambda x:(math.atan(tmp*(x-0.5))/math.atan(tmp*0.5))*0.5+0.5)
+    routeManager.draw_points(sz=0.1,col=carla.Color(255,0,0))
 
     agent=BasicAgent(vehicle)
     agent.set_destination(destination.location)
