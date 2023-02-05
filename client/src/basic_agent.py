@@ -31,13 +31,14 @@ def follow():
     spectator.set_transform(camara)
 
 import math
+import time
 
 while True:
     destination=random.choice(world.get_map().get_spawn_points())
     route=grp.trace_route(vehicle.get_location(),destination.location)
     routeManager.set_route(route)
     routeManager.draw_route(sz=0.2,col=carla.Color(255,255,0))
-    print(f"There are {len(route)} waypoints with length {routeManager.total_length} in the current route.")
+    print(f"{time.strftime('[%F %a %H:%M:%S] ')}There are {len(route)} waypoints with length {routeManager.total_length} in the current route.")
 
     tmp=3
     routeManager.perturb(lambda x:math.atan(tmp*x)/math.atan(tmp))
@@ -56,4 +57,4 @@ while True:
     while not agent.done():
         vehicle.apply_control(agent.run_step())
         follow()
-    print(f"Current route finished, starting next route.",flush=True)
+    print(f"{time.strftime('[%F %a %H:%M:%S] ')}Current route finished, starting next route.",flush=True)

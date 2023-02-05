@@ -8,4 +8,4 @@ RUN pip3 install shapely networkx
 
 WORKDIR /app/src
 
-ENTRYPOINT sh
+ENTRYPOINT ["python3","basic_agent.py"]
