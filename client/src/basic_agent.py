@@ -33,28 +33,23 @@ def follow():
 import math
 import time
 
+def func(t):
+    return abs(math.sin(t/5))*30+10
 while True:
     destination=random.choice(world.get_map().get_spawn_points())
     route=grp.trace_route(vehicle.get_location(),destination.location)
     routeManager.set_route(route)
-    routeManager.draw_route(sz=0.2,col=carla.Color(255,255,0))
+    routeManager.draw_route(sz=0.2,col=carla.Color(255,0,0))
     print(f"{time.strftime('[%F %a %H:%M:%S] ')}There are {len(route)} waypoints with length {routeManager.total_length} in the current route.")
-
-    tmp=3
-    routeManager.perturb(lambda x:math.atan(tmp*x)/math.atan(tmp))
-    routeManager.draw_points(sz=0.1,col=carla.Color(0,0,255))
-
-    tmp=1.3
-    routeManager.perturb(lambda x:math.tan(x*tmp)/math.tan(tmp))
-    routeManager.draw_points(sz=0.1,col=carla.Color(0,255,0))
-
-    tmp=10
-    routeManager.perturb(lambda x:(math.atan(tmp*(x-0.5))/math.atan(tmp*0.5))*0.5+0.5)
-    routeManager.draw_points(sz=0.1,col=carla.Color(255,0,0))
 
     agent=BasicAgent(vehicle)
     agent.set_destination(destination.location)
+    agent.follow_speed_limits(False)
+    agent.ignore_traffic_lights()
+    agent.ignore_stop_signs()
+    agent.ignore_vehicles()
     while not agent.done():
+        agent.set_target_speed(func(time.time()))
         vehicle.apply_control(agent.run_step())
         follow()
     print(f"{time.strftime('[%F %a %H:%M:%S] ')}Current route finished, starting next route.",flush=True)
