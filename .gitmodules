@@ -1,3 +1,6 @@
 [submodule "client/source"]
 	path = client/source
 	url = https://github.com/carla-simulator/carla.git
+[submodule "robot/source"]
+	path = robot/source
+	url = https://github.com/AtsushiSakai/PythonRobotics.git

@@ -2,17 +2,25 @@ version: "3.9"
 services:
   client:
     build: client
-    container_name: client
     tty: true
     restart: always
+    entrypoint: sh
     network_mode: host
     volumes:
       - ./client/src:/app/src
       - ./client/source/PythonAPI/carla:/app/PythonAPI
+  robot:
+    build: robot
+    tty: true
+    restart: always
+    entrypoint: sh
+    network_mode: host
+    volumes:
+      - ./robot/src:/app/src
+      - ./robot/source/:/app/source
   server:
     build: server
     network_mode: host
-    container_name: server
     privileged: true
     environment:
       - DISPLAY=$DISPLAY
